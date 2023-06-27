@@ -1,4 +1,6 @@
+import './Header.css';
 import logo from '../../images/logo.svg';
+import Navigation from '../Navigation/Navigation';
 import { Route, Routes, NavLink } from 'react-router-dom';
 
 function Header(props) {
@@ -15,11 +17,14 @@ function Header(props) {
           </div>
         }/>
         <Route path="/movies" element={
-          <button>
-          </button>
-        } />
-
-
+          <Navigation/>
+        }/>
+        <Route path="/saved-movies" element={
+          <Navigation/>
+        }/>
+        <Route path="/profile" element={
+          <Navigation/>
+        }/>
       </Routes>
     </header>
   );

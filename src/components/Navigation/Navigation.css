@@ -1,0 +1,148 @@
+.navigation__menu {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navigation {
+  width: 100%;
+  position: relative;
+}
+
+.navigation__link {
+  color: #000;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 18px;
+  text-decoration: none;
+}
+
+.navigation__link_hidden {
+  display: none;
+}
+
+.navigation__link_active {
+  text-decoration: underline 2px;
+  text-underline-offset: 4px;
+}
+
+.navigation__profile-link {
+  color: #000;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 16px;
+  text-decoration: none;
+  width: 100px;
+  height: 32px;
+  border-radius: 20px;
+  background: #F9F9F9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.link__container {
+  display: flex;
+  gap: 16px;
+}
+
+.navigation__menu-button {
+  width: 44px;
+  height: 44px;
+  display: none;
+}
+
+.navigation__close-button {
+  width: 40px;
+  height: 40px;
+  display: none;
+}
+
+@media screen and (max-width: 768px) {
+  .navigation__overlay {
+    background-color: rgba(0,0,0,.3);
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    z-index: 0;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility .3s, opacity .3s linear;
+  }
+
+  .navigation__overlay_active {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  .navigation__menu {
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 158px 0 90px;
+    width: 80%;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: -100%;
+    transition: right 1s;
+    background-color: #FFF;
+  } 
+
+  .navigation__menu-button {
+    display: block;
+    position: absolute;
+    top: -20px;
+    right: 0;
+    cursor: pointer;
+    z-index: 1;
+  }
+
+  .navigation__close-button {
+    display: block;
+    position: absolute;
+    top: -20px;
+    right: 0;
+    cursor: pointer;
+    z-index: 1;
+  }
+
+  .navigation__menu_active {
+    right: 0;
+  }
+
+  .link__container {
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+  }
+
+  .navigation__link {
+    font-size: 18px;
+  }
+
+  .navigation__link_hidden {
+    display: inline;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .navigation__menu-button {
+    width: 40px;
+    height: 43px;
+  }
+
+  .navigation__menu {
+    padding: 144px 0 46px;
+    width: 100%;
+  } 
+
+  .link__container {
+    gap: 24px;
+  }
+
+  .navigation__link_active {
+    text-underline-offset: 7px;
+  }  
+}

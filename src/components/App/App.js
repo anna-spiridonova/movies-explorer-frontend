@@ -5,12 +5,13 @@ import Header from '../Header/Header';
 function App() {
   const location = useLocation();
   const isLanding = location.pathname==="/";
+  const headerVisibleOnPath = ["/", "/movies", "/saved-movies", "/profile"]
+  const headerVisible = headerVisibleOnPath.includes(location.pathname);
+
 
   return (
     <div className="App">
-      <Header 
-      isLanding={isLanding}
-      />
+      {headerVisible && <Header isLanding={isLanding} />}
     </div>
   );
 }
