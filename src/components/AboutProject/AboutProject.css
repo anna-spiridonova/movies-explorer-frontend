@@ -1,0 +1,141 @@
+.about {
+  padding: 110px 70px;
+}
+
+.about__list {
+  display: flex;
+  margin: 0;
+  padding: 70px 0 110px;
+  gap: 40px;
+}
+
+.about__item {
+  list-style: none;
+}
+
+.about__heading {
+  color: #000;
+  font-size: 20px;
+  font-weight: 400;
+  letter-spacing: -0.8px;
+  margin: 0 0 26px;
+}
+
+.about__text {
+  color: #000;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  margin: 0;
+}
+
+.about__scale {
+  display: grid;
+  min-height: 72px;
+  max-width: 100%;
+  grid-template: repeat(2, 1fr) / 1fr 4fr;
+  text-align: center;
+  row-gap: 5px;
+}
+
+.about__week-container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.about__week-container_type_backend {
+  background-color: #000;
+  color: #FFF;
+}
+
+.about__week-container_type_frontend {
+  background-color: #F2F2F2;
+  color: #000;
+}
+
+.about__week {
+  font-size: 14px;
+  font-weight: 400;
+  margin: 0;
+}
+
+.about__dev {
+  margin: 0;
+  color: #A0A0A0;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 17px;
+  align-self: center;
+}
+
+
+@media screen and (max-width: 768px) {
+  .about {
+    padding: 90px 50px;
+  }
+
+  .about__list {
+    padding: 70px 0 93px;
+    gap: 30px;
+  }
+
+  .about__heading {
+    margin: 0 0 22px;
+  }
+
+  .about__text {
+    font-size: 12px;
+    line-height: 18px;
+  }
+}
+
+@media screen and (max-width: 460px) {
+  .about__list {
+    gap: 56px;
+    flex-direction: column;
+  }
+
+  .about__scale {
+    grid-template: repeat(2, 1fr) / 1fr 2fr;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .about {
+    padding: 70px 18px;
+  }
+
+  .about__list {
+    padding: 60px 0;
+  }
+
+  .about__heading {
+    margin: 0 0 16px;
+    font-size: 18px;
+    letter-spacing: -0.72px;
+  }
+
+  .about__text {
+    font-size: 11px;
+    line-height: 16px;
+  }
+
+  .about__scale {
+    min-height: 70px;
+    grid-template: repeat(2, 1fr) / 100px 184px;
+    row-gap: 0;
+  }
+
+  .about__week {
+    font-size: 11px;
+  }
+
+  .about__dev {
+    font-size: 11px;
+    font-weight: 400;
+    line-height: normal;
+  }
+}
