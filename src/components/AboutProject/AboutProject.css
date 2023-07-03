@@ -13,7 +13,7 @@
   list-style: none;
 }
 
-.about__heading {
+.about__title {
   color: #000;
   font-size: 20px;
   font-weight: 400;
@@ -21,7 +21,7 @@
   margin: 0 0 26px;
 }
 
-.about__text {
+.about__subtitle {
   color: #000;
   font-size: 14px;
   font-weight: 400;
@@ -39,8 +39,8 @@
 }
 
 .about__week-container {
-  height: 100%;
-  width: 100%;
+  min-height: 100%;
+  max-width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -82,11 +82,11 @@
     gap: 30px;
   }
 
-  .about__heading {
+  .about__title {
     margin: 0 0 22px;
   }
 
-  .about__text {
+  .about__subtitle {
     font-size: 12px;
     line-height: 18px;
   }
@@ -112,13 +112,13 @@
     padding: 60px 0;
   }
 
-  .about__heading {
+  .about__title {
     margin: 0 0 16px;
     font-size: 18px;
     letter-spacing: -0.72px;
   }
 
-  .about__text {
+  .about__subtitle {
     font-size: 11px;
     line-height: 16px;
   }
