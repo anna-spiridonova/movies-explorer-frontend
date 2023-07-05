@@ -36,6 +36,7 @@
 
 .portfolio__link-img {
   padding-left: 10px;
+  object-fit: contain;
 }
 
 @media screen and (max-width: 768px) {
