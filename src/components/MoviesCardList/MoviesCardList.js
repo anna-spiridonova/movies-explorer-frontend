@@ -1,10 +1,13 @@
 import "./MoviesCardList.css";
-import MoviesCard from "../MoviesCard/MoviesCard";
+import cards from "../../utils/cards"
 
 function MoviesCardList() {
   return(
-		<div className="card-list">
-			<MoviesCard />
+		<div className="cards">
+			<ul className="cards__list">
+				{cards}
+			</ul>
+			<button type="button" className="cards__button">Ещё</button>
 		</div>
 	);
 }

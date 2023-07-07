@@ -83,6 +83,7 @@
     right: -100%;
     transition: right 1s;
     background-color: #FFF;
+    z-index: 1;
   } 
 
   .navigation__menu-button {
@@ -96,9 +97,9 @@
 
   .navigation__close-button {
     display: block;
-    position: absolute;
-    top: -20px;
-    right: 0;
+    position: fixed;
+    top: 19px;
+    right: 31px;
     cursor: pointer;
     z-index: 1;
   }
@@ -145,21 +146,9 @@
   .navigation__link_active {
     text-underline-offset: 7px;
   }  
-}
 
-/* .cover__link::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  background-color: #2A2C2F;
-  opacity: .3;
-  z-index: -1;
-  transition: opacity .3s ease;
+  .navigation__close-button {  
+    top: 20px;
+    right: 13px;
+  }
 }
-
-.cover__link:hover::before {
-  opacity: .8;
-} */
