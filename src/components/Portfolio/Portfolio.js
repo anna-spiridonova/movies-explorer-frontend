@@ -3,7 +3,7 @@ import arrow from "../../images/link-arrow.svg";
 
 function Portfolio() {
   return(
-		<div className="portfolio">
+		<section className="portfolio">
 			<h2 className="portfolio__title">Портфолио</h2>
 			<a className="portfolio__link" href="https://github.com/anna-spiridonova/how-to-learn" target="_blank" rel="noreferrer">
 				<p className="portfolio__link-name">Статичный сайт</p>
@@ -17,7 +17,7 @@ function Portfolio() {
 				<p className="portfolio__link-name">Одностраничное приложение</p>
 				<img className="portfolio__link-img" src={arrow} alt="Иконка стрелки" />
 			</a>
-		</div>
+		</section>
 	);
 }
 

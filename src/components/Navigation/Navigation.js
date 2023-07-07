@@ -11,7 +11,7 @@ function Navigation() {
   };
 
   return (
-    <div className="navigation">
+    <section className="navigation">
       <div className={`navigation__overlay ${menu ? "navigation__overlay_active" : ""}`}></div>
       <nav className={`navigation__menu ${menu ? "navigation__menu_active" : ""}`}>
         <div className="link__container">
@@ -48,7 +48,7 @@ function Navigation() {
           onClick={handleMenuClick}
         />
       )}
-    </div>
+    </section>
   );
 }
 

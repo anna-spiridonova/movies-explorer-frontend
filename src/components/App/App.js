@@ -6,6 +6,7 @@ import Footer from '../Footer/Footer';
 import Movies from '../Movies/Movies';
 import SavedMovies from '../SavedMovies/SavedMovies';
 import Profile from '../Profile/Profile';
+import NotFound from '../NotFound/NotFound';
 
 function App() {
   const location = useLocation();
@@ -30,6 +31,9 @@ function App() {
         }/>
         <Route path="/profile" element={
           <Profile />
+        }/>
+        <Route path="*" element={
+          <NotFound />
         }/>
       </Routes>
       
