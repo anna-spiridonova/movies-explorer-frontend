@@ -6,7 +6,7 @@ import { Route, Routes, NavLink } from 'react-router-dom';
 function Header(props) {
   return (
     <header className={`header ${props.isLanding ? "header_type_landing" : ""}`}>
-      <NavLink to="/" className="header__logo">
+      <NavLink to="/" className="logo">
         <img src={logo} alt="Логотип" />
       </NavLink>
       <Routes>
