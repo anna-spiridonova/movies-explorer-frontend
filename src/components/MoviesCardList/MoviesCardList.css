@@ -24,6 +24,11 @@
   min-height: 36px;
   border-radius: 6px;
   cursor: pointer;
+  transition: .5s;
+}
+
+.cards__button:hover {
+  background-color: #CBCBCB;
 }
 
 @media screen and (max-width: 768px) {

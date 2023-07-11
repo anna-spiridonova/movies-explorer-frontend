@@ -13,10 +13,14 @@
 .navigation__link {
   color: #000;
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 18px;
   text-decoration: none;
 }
+
+.navigation__link_active {
+  font-weight: 500;
+} 
 
 .navigation__link_hidden {
   display: none;
@@ -35,6 +39,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: .5s;
+}
+
+.navigation__profile-link:hover {
+  background-color: #CBCBCB;
 }
 
 .link__container {
@@ -62,12 +71,12 @@
     bottom: 0;
     right: 0;
     left: 0;
-    z-index: 0;
+    z-index: 1;
     visibility: hidden;
     opacity: 0;
     transition: visibility .3s, opacity .3s linear;
   }
-
+  
   .navigation__overlay_active {
     visibility: visible;
     opacity: 1;

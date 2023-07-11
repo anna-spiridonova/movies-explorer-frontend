@@ -13,7 +13,7 @@ function NotFound() {
         <h2 className="not-found__title">404</h2>
         <p className="not-found__caption">Страница не найдена</p>
       </div>
-      <button type="button" className="not-found__button" onClick={goBack}>Назад</button>
+      <button type="button" className="app__button not-found__button" onClick={goBack}>Назад</button>
 		</section>
   );
 }

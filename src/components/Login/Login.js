@@ -1,19 +1,16 @@
 import "./Login.css";
 import PageWithForm from "../PageWithForm/PageWithForm";
 import { useState } from "react";
-import { useNavigate } from 'react-router-dom'; 
 
-function Login() {
+function Login({ onLogin }) {
   const [formValue, setformValue] = useState({
     email: "",
     password: ""
   });
 
-  const navigate = useNavigate();
-
   function handleSubmit(evt) {
-    evt.preventDefault();
-    navigate("/movies");
+    // evt.preventDefault();
+    // onLogin();
   }
 
   function handleChange(evt) {

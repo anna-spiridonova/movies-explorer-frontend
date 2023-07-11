@@ -1,11 +1,25 @@
-.App {
-    font-family: 'Inter', Arial, sans-serif;
-    background-color: #ffffff;
-    min-width: 320px;
-    min-height: 100vh;
-    margin: 0 auto;
-    -moz-osx-font-smoothing: grayscale;
-    -webkit-font-smoothing: antialiased;
-    display: flex;
-    flex-direction: column;
-  }
+.app {
+  font-family: "Inter", Arial, sans-serif;
+  background-color: #ffffff;
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0 auto;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  display: flex;
+  flex-direction: column;
+}
+
+.app__logo {
+  width: 38px;
+  height: 38px;
+  display: block;
+}
+
+.app__button {
+  transition: opacity .5s;
+}
+
+.app__button:hover {
+  opacity: .7;
+}

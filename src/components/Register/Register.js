@@ -1,20 +1,17 @@
 import "./Register.css";
 import PageWithForm from "../PageWithForm/PageWithForm";
 import { useState } from "react";
-import { useNavigate } from 'react-router-dom'; 
 
-function Register() {
+function Register({ onRegister }) {
   const [formValue, setformValue] = useState({
     name: "",
     email: "",
     password: ""
   });
 
-  const navigate = useNavigate();
-
   function handleSubmit(evt) {
-    evt.preventDefault();
-    navigate("/signin");
+    // evt.preventDefault();
+    // onRegister();
   }
 
   function handleChange(evt) {

@@ -20,7 +20,7 @@
 	right: 0;
 	bottom: 0;
 	left: 0;
-	background-color: #A0A0A0;
+	background-color: #EBEBEB;
 	border-radius: 20px;
 	transition: .5s;
 }
@@ -30,7 +30,7 @@
 	position: absolute;
 	bottom: 2px;
 	left: 2px;
-	background-color: #fff;
+	background-color: #F5F5F5;
 	width: 16px;
 	height: 16px;
 	border-radius: 50%;
@@ -54,6 +54,7 @@
 	transform: translateX(16px);
 	-webkit-transform: translateX(16px);
 	-ms-transform: translateX(16px);
+	background-color: #fff;
 }
 
 .filter__caption {

@@ -15,17 +15,17 @@ function Navigation() {
       <div className={`navigation__overlay ${menu ? "navigation__overlay_active" : ""}`}></div>
       <nav className={`navigation__menu ${menu ? "navigation__menu_active" : ""}`}>
         <div className="link__container">
-          <NavLink to="/" className="navigation__link navigation__link_hidden">Главная</NavLink>
+          <NavLink to="/" className="app__button navigation__link navigation__link_hidden">Главная</NavLink>
           <NavLink
             to="/movies"
-            className={({ isActive }) =>`navigation__link ${isActive ? "navigation__link_active" : ""}`}
+            className={({ isActive }) =>`app__button navigation__link ${isActive ? "navigation__link_active" : ""}`}
             onClick={handleMenuClick}
           >
             Фильмы
           </NavLink>
           <NavLink
             to="/saved-movies"
-            className={({ isActive }) =>`navigation__link ${isActive ? "navigation__link_active" : ""}`}
+            className={({ isActive }) =>`app__button navigation__link ${isActive ? "navigation__link_active" : ""}`}
             onClick={handleMenuClick}
           >
             Сохранённые фильмы
@@ -36,14 +36,14 @@ function Navigation() {
       {menu ? (
         <img
           src={menu_close}
-          className="navigation__close-button"
+          className="app__button navigation__close-button"
           alt="Кнопка закрытия меню"
           onClick={handleMenuClick}
         />
       ) : (
         <img
           src={menu_icon}
-          className="navigation__menu-button"
+          className="app__button navigation__menu-button"
           alt="Кнопка меню"
           onClick={handleMenuClick}
         />
