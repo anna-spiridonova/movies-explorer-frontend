@@ -1,6 +1,6 @@
 .app {
   font-family: "Inter", Arial, sans-serif;
-  background-color: #ffffff;
+  background-color: #fff;
   min-width: 320px;
   min-height: 100vh;
   margin: 0 auto;
@@ -18,6 +18,10 @@
 
 .app__button {
   transition: opacity .5s;
+}
+
+.app__button_invisible {
+  display: none;
 }
 
 .app__button:hover {

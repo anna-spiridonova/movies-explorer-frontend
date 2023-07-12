@@ -46,7 +46,7 @@
   background-color: #CBCBCB;
 }
 
-.link__container {
+.navigation__container {
   display: flex;
   gap: 16px;
 }
@@ -119,7 +119,7 @@
     right: 0;
   }
 
-  .link__container {
+  .navigation__container {
     flex-direction: column;
     align-items: center;
     gap: 28px;
@@ -150,7 +150,7 @@
     width: 100%;
   } 
 
-  .link__container {
+  .navigation__container {
     gap: 24px;
   }
 

@@ -1,5 +1,7 @@
 .cards {
   padding: 0 70px 80px;
+  max-width: 1280px;
+	margin: 0 auto;
 }
 
 .cards__list {

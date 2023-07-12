@@ -14,7 +14,7 @@ function Navigation() {
     <section className="navigation">
       <div className={`navigation__overlay ${menu ? "navigation__overlay_active" : ""}`}></div>
       <nav className={`navigation__menu ${menu ? "navigation__menu_active" : ""}`}>
-        <div className="link__container">
+        <div className="navigation__container">
           <NavLink to="/" className="app__button navigation__link navigation__link_hidden">Главная</NavLink>
           <NavLink
             to="/movies"

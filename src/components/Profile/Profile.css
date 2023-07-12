@@ -78,10 +78,6 @@
   cursor: pointer;
 }
 
-.profile__button_invisible {
-  display: none;
-}
-
 .profile__save {
   border: none;
   background-color: #000;

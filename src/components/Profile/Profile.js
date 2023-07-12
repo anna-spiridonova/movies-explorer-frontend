@@ -61,13 +61,13 @@ function handleSubmitClick(evt) {
         </form>
       <div className="profile__buttons">
         <span className="profile__error"></span>
-        <button type="button" className={`app__button profile__edit ${isEdit ? "profile__button_invisible" : ""}`} onClick={handleEditClick}>
+        <button type="button" className={`app__button profile__edit ${isEdit ? "app__button_invisible" : ""}`} onClick={handleEditClick}>
           Редактировать
         </button>
-        <button type="submit" className={`app__button profile__save ${!isEdit ? "profile__button_invisible" : ""}`} onClick={handleSubmitClick}>
+        <button type="submit" className={`app__button profile__save ${!isEdit ? "app__button_invisible" : ""}`} onClick={handleSubmitClick}>
           Сохранить
         </button>
-        <NavLink to="/signin" className={`app__button profile__signout ${isEdit ? "profile__button_invisible" : ""}`}>
+        <NavLink to="/signin" className={`app__button profile__signout ${isEdit ? "app__button_invisible" : ""}`}>
           Выйти из аккаунта
         </NavLink>
       </div>
