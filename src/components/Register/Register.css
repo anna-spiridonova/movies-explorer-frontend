@@ -1,0 +1,9 @@
+.register {
+  margin: auto;
+}
+
+@media screen and (max-width: 480px) {
+  .register {
+    margin: 0;
+  }
+}

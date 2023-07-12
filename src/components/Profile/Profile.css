@@ -1,0 +1,154 @@
+.profile {
+  color: #000;
+  display: flex; 
+  flex-direction: column; 
+  width: 410px;
+  margin: auto;
+}
+
+.profile__greetings {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 500;
+  margin: 0 0 123px;
+}
+
+.profile__info {
+  display: flex;
+  justify-content: space-between;
+}
+
+.profile__info:first-of-type {
+  padding-bottom: 17px;
+  border-bottom: #E8E8E8 1px solid;
+}
+
+.profile__info:last-of-type {
+  padding: 17px 0;
+  border-bottom: #fff 1px solid;
+}
+
+.profile__info-title {
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.profile__info-input {
+  font-size: 11px;
+  font-weight: 400;
+  border: none;
+  text-align: right;
+  padding: 0;
+  width: 80%;
+}
+
+.profile__info-input:focus {
+  outline: none;
+}
+
+.profile__info:focus-within {
+  border-bottom: #000 1px solid;
+}
+
+
+.profile__info-input:disabled {
+  background-color: #fff;
+  color: #000;
+}
+
+.profile__buttons {
+  display: flex;
+  gap: 16px;
+  flex-direction: column;
+  margin-top: 203px;
+  width: 100%;
+  align-self: center;
+  align-items: center;
+  position: relative;
+}
+
+.profile__edit {
+  width: fit-content;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 400;
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.profile__save {
+  border: none;
+  background-color: #000;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 3px;
+  width: 100%;
+  min-height: 46px;
+  padding: 0;
+  cursor: pointer;
+}
+
+.profile__save:disabled {
+  background-color: #F8F8F8;
+  color: #C2C2C2;
+  cursor: default;
+}
+
+.profile__signout {
+  width: fit-content;
+  color: #FF4062;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.profile__error {
+  color: #FF4062;
+  font-size: 11px;
+  font-weight: 400;
+  text-align: center;
+  position: absolute;
+  top: -32px;
+  left: 0;
+  width: 100%;
+}
+
+@media screen and (max-width: 768px) {
+  .profile__buttons {
+    margin-top: 193px;
+  }
+
+  .profile__greetings {
+    margin: 0 0 96px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .profile {
+    width: 100%;
+    padding: 70px 30px 40px;
+    box-sizing: border-box;
+    min-height: calc(100vh - 74px);
+    justify-content: space-between;
+  }
+  
+  .profile__buttons {
+    margin: 0;
+  }
+
+  .profile__edit {
+    font-size: 12px;
+  }
+
+  .profile__save {
+    font-size: 12px;
+  }
+  
+  .profile__signout {
+    font-size: 12px;
+  }
+}
