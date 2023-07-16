@@ -39,12 +39,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: .5s;
+  /* transition: .5s; */
 }
 
-.navigation__profile-link:hover {
+/* .navigation__profile-link:hover {
   background-color: #CBCBCB;
-}
+} */
 
 .navigation__container {
   display: flex;

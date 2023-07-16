@@ -11,7 +11,7 @@ function MoviesCardList() {
 					<MoviesCard title={card.title} duration={card.duration} image={card.image} key={card.id}/>
 				))}
 			</ul>
-			<button type="button" className="cards__button">Ещё</button>
+			<button type="button" className="app__button cards__button">Ещё</button>
 		</div>
 	);
 }

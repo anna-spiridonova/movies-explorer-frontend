@@ -6,8 +6,12 @@ import { useState } from 'react';
 
 function Navigation() {
   const [menu, setMenu] = useState(false);
-  const handleMenuClick = () => {
-    setMenu(!menu)
+  const handleMenuOpen = () => {
+    setMenu(true)
+  };
+
+  const handleMenuClose = () => {
+    setMenu(false)
   };
 
   return (
@@ -15,37 +19,49 @@ function Navigation() {
       <div className={`navigation__overlay ${menu ? "navigation__overlay_active" : ""}`}></div>
       <nav className={`navigation__menu ${menu ? "navigation__menu_active" : ""}`}>
         <div className="navigation__container">
-          <NavLink to="/" className="app__button navigation__link navigation__link_hidden">Главная</NavLink>
+          <NavLink 
+            to="/" 
+            className={({ isActive }) =>`app__button navigation__link navigation__link_hidden ${isActive ? "navigation__link_active" : ""}`}
+            onClick={handleMenuClose}
+          >
+            Главная
+          </NavLink>
           <NavLink
             to="/movies"
             className={({ isActive }) =>`app__button navigation__link ${isActive ? "navigation__link_active" : ""}`}
-            onClick={handleMenuClick}
+            onClick={handleMenuClose}
           >
             Фильмы
           </NavLink>
           <NavLink
             to="/saved-movies"
             className={({ isActive }) =>`app__button navigation__link ${isActive ? "navigation__link_active" : ""}`}
-            onClick={handleMenuClick}
+            onClick={handleMenuClose}
           >
             Сохранённые фильмы
           </NavLink>
         </div>
-        <NavLink to="/profile" className="navigation__profile-link" onClick={handleMenuClick}>Аккаунт</NavLink>
+        <NavLink 
+          to="/profile" 
+          className="navigation__profile-link app__button" 
+          onClick={handleMenuClose}
+        >
+          Аккаунт
+        </NavLink>
       </nav>
       {menu ? (
         <img
           src={menu_close}
           className="app__button navigation__close-button"
           alt="Кнопка закрытия меню"
-          onClick={handleMenuClick}
+          onClick={handleMenuClose}
         />
       ) : (
         <img
           src={menu_icon}
           className="app__button navigation__menu-button"
           alt="Кнопка меню"
-          onClick={handleMenuClick}
+          onClick={handleMenuOpen}
         />
       )}
     </section>
