@@ -100,14 +100,14 @@ function PageWithForm({
           className={`app__button form-page__button ${isLogin && "form-page__button_type_login"}`}
           disabled={!isValid}
         >
-          {!isSuccess && <span className="form-page__error">Что-то пошло не так...</span>}
           {buttonText}
         </button>
         <p className="form-page__caption">{caption}
           <span>
             <NavLink to={`${isLogin ? "/signup" : "/signin"}`} className="app__button form-page__link"> {link}</NavLink>
           </span>
-        </p>       
+        </p>     
+        <span className={`form-page__error ${!isSuccess && "form-page__error_visible"}`}>Что-то пошло не так...</span>  
       </div>
     </form>
   );

@@ -2,11 +2,15 @@ import "./Movies.css";
 import SearchForm from "../SearchForm/SearchForm";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 
-function Movies() {
+function Movies({ movies, handleSearch, onChange, isChecked }) {
   return(
 		<section className="movies">
-			<SearchForm />
-			<MoviesCardList />
+			<SearchForm 
+				handleSearch={handleSearch} 
+				onChange={onChange}
+				isChecked={isChecked}
+			/>
+			<MoviesCardList movies={movies} />
 		</section>
   );
 }

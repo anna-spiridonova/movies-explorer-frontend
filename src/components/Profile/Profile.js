@@ -7,7 +7,8 @@ function Profile({
   email,
   onUpdateUser,
   onSignOut,
-  isSuccess
+  isSuccess,
+  onResult
 }) {
 
   const {
@@ -73,7 +74,15 @@ function handleSubmitClick(data) {
           </label>
         </form>
       <div className="profile__buttons">
-        {!isSuccess && <span className="profile__error">Что-то пошло не так...</span>}
+        <span 
+          className={
+            `profile__result 
+            ${onResult && "profile__result_visible"} 
+            ${!isSuccess && "profile__result_error"}`
+          }
+        >
+          {isSuccess ? "Данные упешно обновлены!" : "Что-то пошло не так..."}
+        </span>
         <button
           type="submit"
           className="app__button profile__edit"

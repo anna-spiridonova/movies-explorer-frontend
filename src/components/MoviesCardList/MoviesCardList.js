@@ -1,17 +1,26 @@
 import "./MoviesCardList.css";
-import cards from "../../utils/cards"
 import MoviesCard from "../MoviesCard/MoviesCard";
+import { useLocation } from "react-router-dom";
 
-function MoviesCardList() {
+function MoviesCardList({ movies }) {
+	const location = useLocation();
+  const isMovies = location.pathname==="/movies";
 
   return(
 		<div className="cards">
 			<ul className="cards__list">
-				{cards.map((card) => (
-					<MoviesCard title={card.title} duration={card.duration} image={card.image} key={card.id}/>
-				))}
+				{movies.map((card) => {
+					return (
+						<MoviesCard 
+							title={card.nameRU} 
+							duration={card.duration} 
+							image={`https://api.nomoreparties.co/${card.image.url}`}
+							key={card.id}
+						/>
+					)
+				})}
 			</ul>
-			<button type="button" className="app__button cards__button">Ещё</button>
+			{isMovies && <button type="button" className="app__button cards__button">Ещё</button>}
 		</div>
 	);
 }

@@ -2,11 +2,11 @@ import "./SavedMovies.css";
 import SearchForm from "../SearchForm/SearchForm";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 
-function SavedMovies() {
+function SavedMovies({ savedMovies, handleSearch }) {
   return(
 		<section className="saved-movies">
-			<SearchForm />
-			<MoviesCardList />
+			<SearchForm handleSearch={handleSearch} />
+			<MoviesCardList movies={savedMovies} />
 		</section>
   );
 }

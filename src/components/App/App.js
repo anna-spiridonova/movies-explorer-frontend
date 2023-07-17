@@ -11,6 +11,7 @@ import NotFound from '../NotFound/NotFound';
 import Register from '../Register/Register';
 import Login from '../Login/Login';
 import { api } from "../../utils/MainApi";
+import { MoviesApi } from "../../utils/MoviesApi"
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import * as auth from '../../utils/auth';
 import ProtectedRoute from '../../utils/ProtectedRoute';
@@ -32,19 +33,14 @@ function App() {
   const [isLoginSuccessful, setIsLoginSuccessful] = useState(true);
   const [isRegisterSuccessful, setIsRegisterSuccessful] = useState(true);
   const [isEditSuccessful, setIsEditSuccessful] = useState(true);
-
-  function updateUser({ name, email }) {
-    api.editUserInfo(name, email)
-    .then((res) => {
-      console.log(res);
-      setIsEditSuccessful(true);
-      setCurrentUser(res);
-    })
-    .catch((err) => {
-      setIsEditSuccessful(false);
-      console.log(err)
-    })
-  }
+  const [editResult, setEditResult] = useState(false);
+  const [movies, setMovies] = useState([]);
+  const [savedMovies, setSavedMovies] = useState([]);
+  const [isChecked, setIsChecked] = useState(false);
+	
+  function handleCheckboxChange() {
+		setIsChecked(!isChecked);
+	}
 
   function handleRegister (name, email, password) {
     auth.register(name, email, password) 
@@ -55,6 +51,9 @@ function App() {
       .catch((err) => {
         setIsRegisterSuccessful(false);
         console.log(err)
+      })
+      .finally(() => {
+        setTimeout(() => setIsRegisterSuccessful(true), 3000);
       })
   }
 
@@ -71,7 +70,10 @@ function App() {
     .catch((err) => {
       setIsLoginSuccessful(false);
       console.log(err)
-    });
+    })
+    .finally(() => {
+      setTimeout(() => setIsLoginSuccessful(true), 3000);
+    })
   }
 
   function handleSignOut() {
@@ -95,19 +97,6 @@ function App() {
     navigate("/movies");
   }
 
-  // useEffect(() => {
-  //   tokenCheck()
-  //   if (loggedIn) {
-  //     api.getInitialCards()
-  //       .then((res) => {
-  //         setCards(res.reverse());
-  //       })
-  //       .catch((err) => {
-  //         console.log(err)
-  //       });
-  //   }
-  // }, [loggedIn]);
-
   useEffect(() => {
     tokenCheck();
     if (loggedIn) {
@@ -121,6 +110,56 @@ function App() {
     }
   }, [loggedIn]);
 
+  function updateUser({ name, email }) {
+    api.editUserInfo(name, email)
+    .then((res) => {
+      setCurrentUser(res);
+      setIsEditSuccessful(true);
+    })
+    .catch((err) => {
+      setIsEditSuccessful(false);
+      console.log(err)
+    })
+    .finally(() => {
+      setEditResult(true);
+      setTimeout(() => setEditResult(false), 3000);
+    })
+  }
+
+  function handleMoviesSearch({keyword}) {
+    MoviesApi.getInitialMovies()
+      .then((res) => {
+        if (isChecked) {
+          const shortMovies = res.filter(item => (item.nameRU.toLowerCase().includes(keyword)) & item.duration<=40);
+          setMovies(shortMovies);
+        }
+        else {
+          const movies = res.filter(item => (item.nameRU.toLowerCase().includes(keyword)));
+          setMovies(movies);
+        };
+      })
+      .catch((err) => {
+        console.log(err)
+      });
+  }
+
+  function handleSavedMoviesSearch({keyword}) {
+    api.getMovies()
+    .then((res) => {
+      if (isChecked) {
+        const shortMovies = res.filter(item => (item.nameRU.toLowerCase().includes(keyword)) & item.duration<=40);
+        setSavedMovies(shortMovies);
+      }
+      else {
+        const movies = res.filter(item => (item.nameRU.toLowerCase().includes(keyword)));
+        setSavedMovies(movies);
+      };
+    })
+    .catch((err) => {
+      console.log(err)
+    });
+  }
+
   return (
     <CurrentUserContext.Provider value = {currentUser}>
       <div className="app">
@@ -133,12 +172,18 @@ function App() {
             <ProtectedRoute
               loggedIn={loggedIn}
               element={Movies}
+              movies={movies}
+              handleSearch={handleMoviesSearch}
+              isChecked={isChecked}
+              onChange={handleCheckboxChange}
             />
           }/>
           <Route path="/saved-movies" element={
             <ProtectedRoute
               loggedIn={loggedIn}
               element={SavedMovies}
+              savedMovies={savedMovies}
+              handleSearch={handleSavedMoviesSearch}
             />
           }/>
           <Route path="/profile" element={
@@ -150,6 +195,7 @@ function App() {
               onUpdateUser={updateUser}
               onSignOut={handleSignOut}
               isSuccess={isEditSuccessful}
+              onResult={editResult}
             />
           }/>
           <Route path="*" element={

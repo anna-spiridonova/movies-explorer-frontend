@@ -111,8 +111,8 @@
   background-color: transparent;
 }
 
-.profile__error {
-  color: #FF4062;
+.profile__result {
+  color: #0a9e4d;
   font-size: 13px;
   font-weight: 400;
   text-align: center;
@@ -120,6 +120,16 @@
   top: -70px;
   left: 0;
   width: 100%;
+  opacity: 0;
+  transition: .5s;
+}
+
+.profile__result_visible {
+  opacity: 1;
+}
+
+.profile__result_error {
+  color: #FF4062;
 }
 
 @media screen and (max-width: 768px) {

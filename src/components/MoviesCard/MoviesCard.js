@@ -11,6 +11,12 @@ function MoviesCard({ title, duration, image }) {
 	const location = useLocation();
   const isMovies = location.pathname==="/movies";
 
+  function getDuration(min) {
+    let hours = Math.trunc(min/60);
+    let minutes = min % 60;
+    return `${hours}ч ${minutes}м`;
+  };
+
   return(
 		<li className="card">
 			<img className="card__image" src={image} alt="Обложка фильма"/>
@@ -29,7 +35,7 @@ function MoviesCard({ title, duration, image }) {
           />
         )}
 			</div>
-			<span className="card__duration">{duration}</span>
+			<span className="card__duration">{getDuration(duration)}</span>
 		</li>
 	);
 }
