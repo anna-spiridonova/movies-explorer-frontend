@@ -25,23 +25,27 @@ function App() {
   const footerVisiblePaths = ["/", "/movies", "/saved-movies"]
   const footerVisible = footerVisiblePaths.includes(location.pathname);
 
+  const [movies, setMovies] = useState([]);
+  const [savedMovies, setSavedMovies] = useState([]);
   const [currentUser, setCurrentUser] = useState({
     name: "",
     email: ""
   });
+
   const [loggedIn, setLoggedIn] = useState(false);
   const [isLoginSuccessful, setIsLoginSuccessful] = useState(true);
   const [isRegisterSuccessful, setIsRegisterSuccessful] = useState(true);
   const [isEditSuccessful, setIsEditSuccessful] = useState(true);
   const [editResult, setEditResult] = useState(false);
-  const [movies, setMovies] = useState([]);
-  const [savedMovies, setSavedMovies] = useState([]);
-  const [isChecked, setIsChecked] = useState(false);
-	
-  function handleCheckboxChange() {
-		setIsChecked(!isChecked);
-	}
+  const [isEdit, setIsEdit] = useState(false);
 
+  const [isSearchSuccessful, setIsSearchSuccessful] = useState(true);
+  const [isChecked, setIsChecked] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [noResult, setNoResult] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
+
+// авторизация и регистрация
   function handleRegister (name, email, password) {
     auth.register(name, email, password) 
       .then(() => {
@@ -79,8 +83,11 @@ function App() {
   function handleSignOut() {
     auth.signOut()
       .then(() => {
-        localStorage.removeItem('userId');
+        localStorage.clear();
         setLoggedIn(false);
+        setMovies([]);
+        setIsChecked(false);
+        setSearchValue("");
         navigate("/");
       })
       .catch((err) => {
@@ -94,7 +101,7 @@ function App() {
       return
     };
     setLoggedIn(true);
-    navigate("/movies");
+    navigate(location.pathname);
   }
 
   useEffect(() => {
@@ -110,11 +117,29 @@ function App() {
     }
   }, [loggedIn]);
 
+  useEffect(() => {
+    tokenCheck();
+    if (loggedIn) {
+      api.getMovies()
+        .then((res) => {
+          setSavedMovies(res.reverse());
+        })
+        .catch((err) => {
+          console.log(err)
+        });
+    }
+  }, [loggedIn]);
+
+// редактор профиля
+function togleEdit() {
+  setIsEdit(!isEdit)
+}
   function updateUser({ name, email }) {
     api.editUserInfo(name, email)
     .then((res) => {
       setCurrentUser(res);
       setIsEditSuccessful(true);
+      togleEdit()
     })
     .catch((err) => {
       setIsEditSuccessful(false);
@@ -126,38 +151,122 @@ function App() {
     })
   }
 
+// поиск фильмов
+  function handleSearchError() {
+    setNoResult(true);
+    setIsSearchSuccessful(false)
+  }
+
+  function handleLoading() {
+    setNoResult(false);
+    setIsLoading(true);
+    setIsSearchSuccessful(true)
+  }
+
+  function handleCheckboxChange() {
+		setIsChecked(!isChecked);
+	}
+
+  function saveSearch(arr, isChecked, keyword) {
+    localStorage.setItem('searchInfo', 
+      JSON.stringify({
+        arr: arr,
+        isChecked: isChecked,
+        keyword: keyword,
+      })
+    );
+  }
+
+  useEffect(() => {
+    const searchInfo = JSON.parse(localStorage.getItem('searchInfo'));
+    if(!searchInfo) {
+      return
+    }
+    setMovies(searchInfo.arr);
+    setIsChecked(searchInfo.isChecked);
+    setSearchValue(searchInfo.keyword);
+  }, []);
+  
   function handleMoviesSearch({keyword}) {
+    handleLoading();
     MoviesApi.getInitialMovies()
       .then((res) => {
-        if (isChecked) {
-          const shortMovies = res.filter(item => (item.nameRU.toLowerCase().includes(keyword)) & item.duration<=40);
-          setMovies(shortMovies);
-        }
-        else {
-          const movies = res.filter(item => (item.nameRU.toLowerCase().includes(keyword)));
-          setMovies(movies);
-        };
+        filter(res, keyword, setMovies);
+      })      
+      .catch((err) => {
+        handleSearchError();
+        console.log(err)
+      })
+      .finally(() => setIsLoading(false));
+  }
+
+  function handleSavedMoviesSearch({keyword}) {
+    handleLoading();
+    api.getMovies()
+    .then((res) => {
+      filter(res, keyword, setSavedMovies);
+    })
+    .catch((err) => {
+      handleSearchError();
+      console.log(err)
+    })
+    .finally(() => setIsLoading(false));
+  }
+
+  function filter(arr, keyword, setState) {
+    if (isChecked) {
+      const shortMovies = arr.filter(item => (item.nameRU.toLowerCase().includes(keyword)) & item.duration<=40);
+      saveSearch(shortMovies, isChecked, keyword);
+      if (shortMovies.length===0) {
+        setState([]);
+        setNoResult(true)
+      } else {
+        setState(shortMovies);
+      }
+    }
+    else {
+      const movies = arr.filter(item => (item.nameRU.toLowerCase().includes(keyword)));
+      saveSearch(movies, isChecked, keyword);
+      if (movies.length===0) {
+        setState([]);
+        setNoResult(true)
+      } else {
+        setState(movies);
+      }
+    };
+  }
+
+  // сохранение и удаление фильмов
+  function handleSaveMovie(movie) {
+    api.createMovie({
+      image: `https://api.nomoreparties.co${movie.image.url}`, 
+      id: movie.id,
+      thumbnail: `https://api.nomoreparties.co${movie.image.url}`,
+      country: movie.country,
+      director: movie.director,
+      duration: movie.duration,
+      year: movie.year,
+      description: movie.description,
+      trailerLink: movie.trailerLink,
+      nameRU: movie.nameRU,
+      nameEN: movie.nameEN,
+    })
+      .then((newMovie) => {
+        setSavedMovies([newMovie, ...savedMovies]);
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
+
+  function handleDeleteMovie(movie) {
+    api.deleteMovie(movie._id)
+      .then(() => {
+        setSavedMovies((state) => state.filter((item) => item._id !== movie._id)); 
       })
       .catch((err) => {
         console.log(err)
       });
-  }
-
-  function handleSavedMoviesSearch({keyword}) {
-    api.getMovies()
-    .then((res) => {
-      if (isChecked) {
-        const shortMovies = res.filter(item => (item.nameRU.toLowerCase().includes(keyword)) & item.duration<=40);
-        setSavedMovies(shortMovies);
-      }
-      else {
-        const movies = res.filter(item => (item.nameRU.toLowerCase().includes(keyword)));
-        setSavedMovies(movies);
-      };
-    })
-    .catch((err) => {
-      console.log(err)
-    });
   }
 
   return (
@@ -176,6 +285,13 @@ function App() {
               handleSearch={handleMoviesSearch}
               isChecked={isChecked}
               onChange={handleCheckboxChange}
+              isLoading={isLoading}
+              noResult={noResult}
+              isSearchSuccessful={isSearchSuccessful}
+              searchValue={searchValue}
+              handleSave={handleSaveMovie}
+              savedMovies={savedMovies}
+              handleDelete={handleDeleteMovie}
             />
           }/>
           <Route path="/saved-movies" element={
@@ -184,6 +300,13 @@ function App() {
               element={SavedMovies}
               savedMovies={savedMovies}
               handleSearch={handleSavedMoviesSearch}
+              onChange={handleCheckboxChange}
+              isChecked={isChecked}
+              isLoading={isLoading}
+              noResult={noResult}
+              searchValue={searchValue}
+              handleDelete={handleDeleteMovie}
+              isSearchSuccessful={isSearchSuccessful}
             />
           }/>
           <Route path="/profile" element={
@@ -196,6 +319,8 @@ function App() {
               onSignOut={handleSignOut}
               isSuccess={isEditSuccessful}
               onResult={editResult}
+              togleEdit={togleEdit}
+              isEdit={isEdit}
             />
           }/>
           <Route path="*" element={

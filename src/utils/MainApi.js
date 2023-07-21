@@ -53,17 +53,18 @@ class Api {
   }
 
   deleteMovie(movieId) {
-    return this._request(`${this._baseUrl}/movie/${movieId}`, {
+    return this._request(`${this._baseUrl}/movies/${movieId}`, {
       headers: this._headers,
       credentials: 'include',
       method: 'DELETE'
     })
   }
+
 }
 
 export const api = new Api({
-  // baseUrl: 'https://api.movies.project.nomoreparties.sbs',
-  baseUrl: 'http://localhost:3001',
+  baseUrl: 'https://api.movies.project.nomoreparties.sbs',
+  // baseUrl: 'http://localhost:3001',
   headers: {
     'Content-Type': 'application/json'
   }

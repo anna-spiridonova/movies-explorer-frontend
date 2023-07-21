@@ -1,5 +1,5 @@
-// const baseUrl = "https://api.movies.project.nomoreparties.sbs";
-const baseUrl= 'http://localhost:3001';
+const baseUrl = "https://api.movies.project.nomoreparties.sbs";
+// const baseUrl= 'http://localhost:3001';
 
 
 export const handleResponse = (res) => {

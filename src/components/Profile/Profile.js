@@ -8,7 +8,9 @@ function Profile({
   onUpdateUser,
   onSignOut,
   isSuccess,
-  onResult
+  onResult,
+  togleEdit,
+  isEdit
 }) {
 
   const {
@@ -26,9 +28,9 @@ function Profile({
     },
   });
 
-function handleSubmitClick(data) {
-  onUpdateUser(data);
-}
+  function handleSubmitClick(data) {
+    onUpdateUser(data);
+  }
 
   return (
     <section className="profile">
@@ -40,7 +42,9 @@ function handleSubmitClick(data) {
             className={`profile__info-input ${errors.name && "profile__info-input_invalid"}`}
             type="text"
             placeholder="Имя"
+            disabled={!isEdit}
             {...register("name", {
+              required: "Поле должно быть заполенено.",
               pattern: {
                 value: namePattern,
                 message: "Введено некорректное имя."
@@ -59,7 +63,9 @@ function handleSubmitClick(data) {
               className={`profile__info-input ${errors.email && "profile__info-input_invalid"}`}
               type="email"
               placeholder="Email"
+              disabled={!isEdit}
               {...register("email", {
+                required: "Поле должно быть заполенено.",
                 pattern: {
                   value: emailPattern,
                   message: "Введён некорректный e-mail."
@@ -83,15 +89,26 @@ function handleSubmitClick(data) {
         >
           {isSuccess ? "Данные упешно обновлены!" : "Что-то пошло не так..."}
         </span>
-        <button
-          type="submit"
-          className="app__button profile__edit"
+        <button 
+          type="submit" 
+          className={`app__button profile__save ${!isEdit ? "app__button_invisible" : ""}`} 
           onClick={handleSubmit(handleSubmitClick)}
           disabled={!isValid}
         >
+          Сохранить
+        </button>
+        <button
+          type="button"
+          className={`app__button profile__edit ${isEdit ? "app__button_invisible" : ""}`} 
+          onClick={togleEdit}
+        >
           Редактировать
         </button>
-        <button type="button" className="app__button profile__signout" onClick={onSignOut}>
+        <button 
+          type="button" 
+          className={`app__button profile__signout ${isEdit ? "app__button_invisible" : ""}`} 
+          onClick={onSignOut}
+        >
           Выйти из аккаунта
         </button>
       </div>

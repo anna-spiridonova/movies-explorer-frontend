@@ -71,7 +71,7 @@
     bottom: 0;
     right: 0;
     left: 0;
-    z-index: 1;
+    z-index: 2;
     visibility: hidden;
     opacity: 0;
     transition: visibility .3s, opacity .3s linear;
@@ -94,7 +94,7 @@
     right: -100%;
     transition: right 1s;
     background-color: #FFF;
-    z-index: 1;
+    z-index: 3;
   } 
 
   .navigation__menu-button {
@@ -103,7 +103,7 @@
     top: -20px;
     right: 0;
     cursor: pointer;
-    z-index: 1;
+    z-index: 3;
   }
 
   .navigation__close-button {
@@ -112,7 +112,7 @@
     top: 19px;
     right: 31px;
     cursor: pointer;
-    z-index: 1;
+    z-index: 3;
   }
 
   .navigation__menu_active {
