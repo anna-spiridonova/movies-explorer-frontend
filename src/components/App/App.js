@@ -97,10 +97,9 @@ function App() {
       return
     };
     setLoggedIn(true);
-    if (location.pathname==="/signin" || location.pathname==="/signup") {
-      navigate(-1, {replace: true});
-    } 
-    else {
+    if(lastPage==="/signin" || lastPage==="/signup") {
+      navigate(location.pathname);
+    } else {
       navigate(lastPage || location.pathname);
     }
   }
