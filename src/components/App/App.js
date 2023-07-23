@@ -11,7 +11,6 @@ import NotFound from '../NotFound/NotFound';
 import Register from '../Register/Register';
 import Login from '../Login/Login';
 import { api } from "../../utils/MainApi";
-import { MoviesApi } from "../../utils/MoviesApi"
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import * as auth from '../../utils/auth';
 import ProtectedRoute from '../../utils/ProtectedRoute';
@@ -24,26 +23,26 @@ function App() {
   const headerVisible = headerVisiblePaths.includes(location.pathname);
   const footerVisiblePaths = ["/", "/movies", "/saved-movies"]
   const footerVisible = footerVisiblePaths.includes(location.pathname);
+  const lastPage = localStorage.getItem('lastPage');
 
-  const [movies, setMovies] = useState([]);
   const [savedMovies, setSavedMovies] = useState([]);
   const [currentUser, setCurrentUser] = useState({
     name: "",
     email: ""
   });
-
+  const [isLiked, setIsLiked] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
   const [isLoginSuccessful, setIsLoginSuccessful] = useState(true);
   const [isRegisterSuccessful, setIsRegisterSuccessful] = useState(true);
   const [isEditSuccessful, setIsEditSuccessful] = useState(true);
   const [editResult, setEditResult] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(true);
 
-  const [isSearchSuccessful, setIsSearchSuccessful] = useState(true);
-  const [isChecked, setIsChecked] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [noResult, setNoResult] = useState(false);
-  const [searchValue, setSearchValue] = useState("");
+  useEffect(() => {
+    if (location.pathname)
+    localStorage.setItem('lastPage', location.pathname);
+  }, [location.pathname])
 
 // авторизация и регистрация
   function handleRegister (name, email, password) {
@@ -85,9 +84,6 @@ function App() {
       .then(() => {
         localStorage.clear();
         setLoggedIn(false);
-        setMovies([]);
-        setIsChecked(false);
-        setSearchValue("");
         navigate("/");
       })
       .catch((err) => {
@@ -101,7 +97,12 @@ function App() {
       return
     };
     setLoggedIn(true);
-    navigate(location.pathname);
+    if (location.pathname==="/signin" || location.pathname==="/signup") {
+      navigate(-1, {replace: true});
+    } 
+    else {
+      navigate(lastPage || location.pathname);
+    }
   }
 
   useEffect(() => {
@@ -130,11 +131,14 @@ function App() {
     }
   }, [loggedIn]);
 
-// редактор профиля
-function togleEdit() {
-  setIsEdit(!isEdit)
-}
+  // редактор профиля
+  function togleEdit() {
+    setIsEdit(!isEdit);
+    setIsDisabled(false)
+  }
+
   function updateUser({ name, email }) {
+    setIsDisabled(true);
     api.editUserInfo(name, email)
     .then((res) => {
       setCurrentUser(res);
@@ -148,92 +152,8 @@ function togleEdit() {
     .finally(() => {
       setEditResult(true);
       setTimeout(() => setEditResult(false), 3000);
+      setIsDisabled(false);
     })
-  }
-
-// поиск фильмов
-  function handleSearchError() {
-    setNoResult(true);
-    setIsSearchSuccessful(false)
-  }
-
-  function handleLoading() {
-    setNoResult(false);
-    setIsLoading(true);
-    setIsSearchSuccessful(true)
-  }
-
-  function handleCheckboxChange() {
-		setIsChecked(!isChecked);
-	}
-
-  function saveSearch(arr, isChecked, keyword) {
-    localStorage.setItem('searchInfo', 
-      JSON.stringify({
-        arr: arr,
-        isChecked: isChecked,
-        keyword: keyword,
-      })
-    );
-  }
-
-  useEffect(() => {
-    const searchInfo = JSON.parse(localStorage.getItem('searchInfo'));
-    if(!searchInfo) {
-      return
-    }
-    setMovies(searchInfo.arr);
-    setIsChecked(searchInfo.isChecked);
-    setSearchValue(searchInfo.keyword);
-  }, []);
-  
-  function handleMoviesSearch({keyword}) {
-    handleLoading();
-    MoviesApi.getInitialMovies()
-      .then((res) => {
-        filter(res, keyword, setMovies);
-      })      
-      .catch((err) => {
-        handleSearchError();
-        console.log(err)
-      })
-      .finally(() => setIsLoading(false));
-  }
-
-  function handleSavedMoviesSearch({keyword}) {
-    handleLoading();
-    api.getMovies()
-    .then((res) => {
-      filter(res, keyword, setSavedMovies);
-    })
-    .catch((err) => {
-      handleSearchError();
-      console.log(err)
-    })
-    .finally(() => setIsLoading(false));
-  }
-
-  function filter(arr, keyword, setState) {
-    if (isChecked) {
-      const shortMovies = arr.filter(item => (item.nameRU.toLowerCase().includes(keyword)) & item.duration<=40);
-      saveSearch(shortMovies, isChecked, keyword);
-      if (shortMovies.length===0) {
-        setState([]);
-        setNoResult(true)
-      } else {
-        setState(shortMovies);
-      }
-    }
-    else {
-      const movies = arr.filter(item => (item.nameRU.toLowerCase().includes(keyword)));
-      saveSearch(movies, isChecked, keyword);
-      if (movies.length===0) {
-        setState([]);
-        setNoResult(true)
-      } else {
-        setState(movies);
-      }
-    };
   }
 
   // сохранение и удаление фильмов
@@ -253,6 +173,7 @@ function togleEdit() {
     })
       .then((newMovie) => {
         setSavedMovies([newMovie, ...savedMovies]);
+        setIsLiked(true);
       })
       .catch((err) => {
         console.log(err)
@@ -263,6 +184,7 @@ function togleEdit() {
     api.deleteMovie(movie._id)
       .then(() => {
         setSavedMovies((state) => state.filter((item) => item._id !== movie._id)); 
+        setIsLiked(false);
       })
       .catch((err) => {
         console.log(err)
@@ -281,17 +203,10 @@ function togleEdit() {
             <ProtectedRoute
               loggedIn={loggedIn}
               element={Movies}
-              movies={movies}
-              handleSearch={handleMoviesSearch}
-              isChecked={isChecked}
-              onChange={handleCheckboxChange}
-              isLoading={isLoading}
-              noResult={noResult}
-              isSearchSuccessful={isSearchSuccessful}
-              searchValue={searchValue}
               handleSave={handleSaveMovie}
               savedMovies={savedMovies}
               handleDelete={handleDeleteMovie}
+              isLiked={isLiked}
             />
           }/>
           <Route path="/saved-movies" element={
@@ -299,28 +214,20 @@ function togleEdit() {
               loggedIn={loggedIn}
               element={SavedMovies}
               savedMovies={savedMovies}
-              handleSearch={handleSavedMoviesSearch}
-              onChange={handleCheckboxChange}
-              isChecked={isChecked}
-              isLoading={isLoading}
-              noResult={noResult}
-              searchValue={searchValue}
               handleDelete={handleDeleteMovie}
-              isSearchSuccessful={isSearchSuccessful}
             />
           }/>
           <Route path="/profile" element={
             <ProtectedRoute
               loggedIn={loggedIn}
               element={Profile}
-              name={currentUser.name}
-              email={currentUser.email}
               onUpdateUser={updateUser}
               onSignOut={handleSignOut}
               isSuccess={isEditSuccessful}
               onResult={editResult}
               togleEdit={togleEdit}
               isEdit={isEdit}
+              isDisabled={isDisabled}
             />
           }/>
           <Route path="*" element={

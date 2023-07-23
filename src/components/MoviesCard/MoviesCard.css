@@ -73,6 +73,12 @@
   }
 }
 
+@media screen and (max-width: 768px) {
+  .card__button_type_delete {
+    opacity: 1;
+  }
+}
+
 @media screen and (max-width: 320px) {
   .card__duration {
     font-size: 10px;

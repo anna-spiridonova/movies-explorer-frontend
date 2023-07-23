@@ -1,27 +1,32 @@
 import "./MoviesCardList.css";
 import MoviesCard from "../MoviesCard/MoviesCard";
 import { useEffect, useState } from "react";
-// import { useLocation } from "react-router-dom";
+import {
+	DESKTOP_SIZE,
+	TABLET_SIZE,
+	MOBILE_SIZE,
+	DESKTOP_MOVIES_COUNT,
+	TABLET_MOVIES_COUNT,
+	MOBILE_MOVIES_COUNT,
+	DESKTOP_MORE_MOVIES,
+	TABLET_MORE_MOVIES,
+	MOBILE_MORE_MOVIES,
+} from "../../utils/constants";
 
-function MoviesCardList({ movies, handleSave, handleDelete, savedMovies }) {
-	// const location = useLocation();
-  // const isMovies = location.pathname==="/movies";
-	// const desktopSize = 1280;
-	// const tabletSize = 990;
-	// const mobileSize = 630;
-	const [visibleMoviesAmount, setVisibleMoviesAmount] = useState(12);
+function MoviesCardList({ movies, handleSave, handleDelete, savedMovies, isLiked }) {
+	const [visibleMoviesAmount, setVisibleMoviesAmount] = useState(DESKTOP_MOVIES_COUNT);
 	const renderedMovies = movies.slice(0, visibleMoviesAmount);
 
   useEffect(() => {
     function handleResize() {
       let width = window.innerWidth;
       let moviesCount;
-      if (width >= 990) {
-        moviesCount = 12;
-      } else if(width >= 630) {
-        moviesCount = 8;
+      if (width >= TABLET_SIZE) {
+        moviesCount = DESKTOP_MOVIES_COUNT;
+      } else if(width >= MOBILE_SIZE) {
+        moviesCount = TABLET_MOVIES_COUNT;
 			} else {
-				moviesCount = 5;
+				moviesCount = MOBILE_MOVIES_COUNT;
 			};
       setVisibleMoviesAmount(moviesCount);
     };
@@ -34,12 +39,12 @@ function MoviesCardList({ movies, handleSave, handleDelete, savedMovies }) {
 
 	function getMoreMovies() {
 		let width = window.innerWidth;
-		if (width >=1280) {
-			setVisibleMoviesAmount((state) => state + 4);
-		}else if(width >=990) {
-			setVisibleMoviesAmount((state) => state + 3);
+		if (width >=DESKTOP_SIZE) {
+			setVisibleMoviesAmount((state) => state + DESKTOP_MORE_MOVIES);
+		}else if(width >=TABLET_SIZE) {
+			setVisibleMoviesAmount((state) => state + TABLET_MORE_MOVIES);
 		}else {
-			setVisibleMoviesAmount((state) => state + 2);
+			setVisibleMoviesAmount((state) => state + MOBILE_MORE_MOVIES);
 		}
 	}
 
@@ -54,6 +59,7 @@ function MoviesCardList({ movies, handleSave, handleDelete, savedMovies }) {
 							card={card}
 							handleDelete={handleDelete}
 							savedMovies={savedMovies}
+							isLiked={isLiked}
 						/>
 					)
 				})}

@@ -1,83 +1,105 @@
 import "./Profile.css";
-import { useForm } from "react-hook-form";
-import { emailPattern, namePattern } from "../../utils/constants";
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
+import { useContext, useState, useEffect } from "react";
 
 function Profile({
-  name,
-  email,
   onUpdateUser,
   onSignOut,
   isSuccess,
   onResult,
   togleEdit,
-  isEdit
+  isEdit,
+  isDisabled
 }) {
 
-  const {
-    register,
-    formState: {
-      errors,
-      isValid
-    },
-    handleSubmit,
-  } = useForm({
-    mode: "onChange",
-    defaultValues: {
-      name: name,
-      email: email,
-    },
+  const userInfo = useContext(CurrentUserContext);
+  const [formValue, setFormValue] = useState({
+    name: "",
+    email: ""
   });
+  const [errorMessage, setErrorMessage] = useState({
+    name: "",
+    email: ""
+  })
+  const [isValid, setisValid] = useState(false)
 
-  function handleSubmitClick(data) {
-    onUpdateUser(data);
+  useEffect(() => {
+    setFormValue({
+      name: userInfo.name,
+      email: userInfo.email
+    });
+  }, [userInfo]); 
+
+  useEffect(() => {
+    if(formValue.name===userInfo.name && formValue.email===userInfo.email) {
+      setisValid(false)
+    }
+  }, [userInfo, formValue]); 
+
+  function handleChangeName(evt) {
+    const { name, value } = evt.target;
+    setFormValue({
+      ...formValue,
+      [name]: value
+    });
+    setErrorMessage({
+      ...errorMessage,
+      [name]: evt.target.validationMessage
+    });
+    setisValid(evt.target.validity.valid);
+  }
+
+  function handleChangeEmail(evt) {
+    const { name, value } = evt.target;
+    setFormValue({
+      ...formValue,
+      [name]: value
+    });
+    setErrorMessage({
+      ...errorMessage,
+      [name]: evt.target.validationMessage
+    });
+    setisValid(evt.target.validity.valid);
+  }
+
+  function handleSubmit() {
+    onUpdateUser(formValue);
   }
 
   return (
     <section className="profile">
       <form className="profile__form" name="profile-form" noValidate>
-        <h2 className="profile__greetings">Привет, {name}!</h2>
+        <h2 className="profile__greetings">Привет, {userInfo.name}!</h2>
         <label className="profile__info">
           <span className="profile__info-title">Имя</span>
           <input
-            className={`profile__info-input ${errors.name && "profile__info-input_invalid"}`}
+            className={`profile__info-input ${errorMessage.name && "profile__info-input_invalid"}`}
             type="text"
             placeholder="Имя"
-            disabled={!isEdit}
-            {...register("name", {
-              required: "Поле должно быть заполенено.",
-              pattern: {
-                value: namePattern,
-                message: "Введено некорректное имя."
-              }
-            })}
+            disabled={!isEdit || isDisabled}
+            name="name"
+            onChange={handleChangeName}
+            value={formValue.name}
+            minLength={2}
+            maxLength={18}
+            required
           />
-          {errors.name && (
-            <span className="profile__input-error">
-              {errors.name.message || "Что-то пошло не так..."}
-            </span>
-          )}
           </label>
+          <span className="profile__input-error">{errorMessage.name}</span>
           <label className="profile__info">
             <span className="profile__info-title">E-mail</span>
             <input
-              className={`profile__info-input ${errors.email && "profile__info-input_invalid"}`}
+              className={`profile__info-input ${errorMessage.email && "profile__info-input_invalid"}`}
               type="email"
               placeholder="Email"
-              disabled={!isEdit}
-              {...register("email", {
-                required: "Поле должно быть заполенено.",
-                pattern: {
-                  value: emailPattern,
-                  message: "Введён некорректный e-mail."
-                }
-              })}
+              disabled={!isEdit || isDisabled}
+              name="email"
+              onChange={handleChangeEmail}
+              value={formValue.email}
+              required
             />
-            {errors.email && (
-              <span className="profile__input-error">
-                {errors.email.message || "Что-то пошло не так..."}
-              </span>
-            )}
           </label>
+          <span className="profile__input-error">{errorMessage.email}</span>
         </form>
       <div className="profile__buttons">
         <span 
@@ -92,8 +114,8 @@ function Profile({
         <button 
           type="submit" 
           className={`app__button profile__save ${!isEdit ? "app__button_invisible" : ""}`} 
-          onClick={handleSubmit(handleSubmitClick)}
-          disabled={!isValid}
+          onClick={handleSubmit}
+          disabled={!isValid || isDisabled}
         >
           Сохранить
         </button>

@@ -1,39 +1,47 @@
 import "./SearchForm.css";
 import search_icon from "../../images/search-icon.svg";
 import FilterCheckbox from "../FilterCheckbox/FilterCheckbox";
-import { useForm } from "react-hook-form";
+import { useState, useEffect } from "react";
 
 function SearchForm({ handleSearch, onChange, isChecked, searchValue }) {
-	const {
-    register,
-    formState: {
-      errors,
-    },
-		handleSubmit,
-  } = useForm({
-    mode: "onSubmit",
-		defaultValues: {
-			keyword: searchValue,
-		}
-  });
 
-	function handleSubmitClick(data) {
-		handleSearch(data)
-	}
+  const [keywordValue, setKeywordValue] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+	const [isValid, setisValid] = useState(true);
+
+	useEffect(() => {
+    setKeywordValue(searchValue);
+  }, [searchValue]); 
+
+	function handleChangeKeyword(evt) {
+    setKeywordValue(evt.target.value);
+		setisValid(evt.target.validity.valid);
+  };
+
+	function handleSubmit(evt) {
+		evt.preventDefault();
+		if(!isValid) {
+			setErrorMessage("Нужно ввести ключевое слово.");
+		} else {
+			handleSearch(keywordValue, isChecked);
+			setErrorMessage("");
+		}
+	};
 
   return(
 		<div className="search">
 			<div className="search__wrapper">
 				<div className="search__container">
 					<img src={search_icon} className="search__icon" alt="Иконка поиска" />
-					<form className="search__form" name="search" noValidate onSubmit={handleSubmit(handleSubmitClick)}>
+					<form className="search__form" name="search" noValidate onSubmit={handleSubmit}>
 						<input
-							{...register("keyword", {
-								required: "Нужно ввести ключевое слово."
-							})}
 							type="text"
 							className="search__input"
 							placeholder="Фильм"
+							name="keyword"
+							value={keywordValue || ''}
+							onChange={handleChangeKeyword}
+							required
 						/>
 						<button type="submit" className="app__button search__button" />
 					</form>
@@ -41,11 +49,7 @@ function SearchForm({ handleSearch, onChange, isChecked, searchValue }) {
 						onChange={onChange}
 						isChecked={isChecked}
 					/>
-					{errors.keyword && (
-						<span className="search__input-error">
-							{errors.keyword.message || "Что-то пошло не так..."}
-						</span>
-					)}
+					<span className="search__input-error">{errorMessage}</span>
 				</div>
 			</div>
   	</div>
