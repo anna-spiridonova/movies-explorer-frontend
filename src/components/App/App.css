@@ -24,6 +24,6 @@
   display: none;
 }
 
-.app__button:hover {
+.app__button:not(:disabled):hover {
   opacity: .7;
 }
